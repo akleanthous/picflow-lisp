@@ -17,5 +17,6 @@
    (:file "inline-processor" :depends-on ("picflow"))
    (:file "pwm" :depends-on ("timer0" "picflow"))
    (:file "c-blocks" :depends-on ("picflow"))
-   (:file "section-blocks" :depends-on ("picflow")))
+   (:file "section-blocks" :depends-on ("picflow"))
+   (:file "splitter" :depends-on ("picflow")))
   :depends-on (cl-utilities cl-ppcre))
