@@ -191,7 +191,8 @@ pic-type, e.g., '18f4520' or '18f4431'"
   ;; Then emit the device-independant code, found in an include file
   (emit-file "include/std-c-headers.inc"))
 
-(defvar *c-gensym-counter* 0)
+(defvar *c-gensym-counter* 0
+  "A counter used to generate probably-unique C symbols")
 
 (defun c-gensym (name)
   "Generate a probably-unique C symbol"
