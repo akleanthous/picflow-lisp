@@ -106,3 +106,19 @@ void BLOCKNAME(unsigned long arg) {
   (define-extra-code "// THIS IS EXTRA CODE, YO!")
   (set-main-loop-code "// Do the main loop! Loop mainly!")
   (generate-code "18f4520"))
+
+(defun wonky-counter-block ()
+  (c-block "
+void BLOCKNAME(unsigned long arg) {
+  static unsigned int counter = 0;
+  static unsigned int increment = 1;
+  $DEFAULT(counter + increment);
+  increment *= 2;
+}
+"))
+
+;; Derivative block test
+(progn
+  (cleanup)
+  (-> ((timer "timekeeper")) ((wonky-counter-block)) ((derivative "unsigned int")) ((usart-tracer)))
+  (generate-code "18f4520"))
