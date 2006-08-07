@@ -19,5 +19,6 @@
    (:file "c-blocks" :depends-on ("picflow"))
    (:file "section-blocks" :depends-on ("picflow"))
    (:file "splitter" :depends-on ("picflow"))
-   (:file "derivative" :depends-on ("c-blocks")))
+   (:file "derivative" :depends-on ("c-blocks"))
+   (:file "integral" :depends-on ("c-blocks")))
   :depends-on (cl-utilities cl-ppcre))

@@ -112,7 +112,7 @@ void BLOCKNAME(unsigned long arg) {
 void BLOCKNAME(unsigned long arg) {
   static unsigned int counter = 0;
   static unsigned int increment = 1;
-  $DEFAULT(counter + increment);
+  $DEFAULT(counter += increment);
   increment *= 2;
 }
 "))
@@ -121,4 +121,17 @@ void BLOCKNAME(unsigned long arg) {
 (progn
   (cleanup)
   (-> ((timer "timekeeper")) ((wonky-counter-block)) ((derivative "unsigned int")) ((usart-tracer)))
+  (generate-code "18f4520"))
+
+;; Integral block test
+(progn
+  (cleanup)
+  (-> ((timer "timekeeper")) ((wonky-counter-block))
+      ;; These should cancel each other out, so the next bit can be
+      ;; commented out without affecting anything except the first
+      ;; term of the sequence. If the integral is put after the
+      ;; derivative block, it must have a C term of 1.
+      ((integral-rectangle "unsigned int")) #+nil ((usart-tracer :printf-string "{int: %u}\\n")) ((derivative "unsigned int")) 
+      ;((derivative "unsigned int")) #+nil ((usart-tracer :printf-string "{deriv: %u}\\n")) ((integral-rectangle "unsigned int" "1"))
+      ((usart-tracer)))
   (generate-code "18f4520"))
