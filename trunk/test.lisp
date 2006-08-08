@@ -135,3 +135,18 @@ void BLOCKNAME(unsigned long arg) {
       ;((derivative "unsigned int")) #+nil ((usart-tracer :printf-string "{deriv: %u}\\n")) ((integral-rectangle "unsigned int" "1"))
       ((usart-tracer)))
   (generate-code "18f4520"))
+
+;; Moving average block test
+(progn
+  (cleanup)
+  (-> ((timer "timekeeper" :initial-timer-state 500)) ((counter-block))
+      ((moving-average 5 "unsigned char" "unsigned int"))
+      ((usart-tracer)))
+  (generate-code "18f4520"))
+
+(progn
+  (cleanup)
+  (-> ((timer "timekeeper" :initial-timer-state 500)) ((wonky-counter-block))
+      ((moving-average 5 "unsigned int" "unsigned long"))
+      ((usart-tracer)))
+  (generate-code "18f4520"))
