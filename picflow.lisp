@@ -194,6 +194,13 @@ pic-type, e.g., '18f4520' or '18f4431'"
 (defvar *c-gensym-counter* 0
   "A counter used to generate probably-unique C symbols")
 
+(defun cleanup-c-gensym-counter ()
+  "Reset the C gensym counter to 0 on seperate runs for aesthetics"
+  (setf *c-gensym-counter* 0))
+
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (pushnew 'cleanup-c-gensym-counter *cleanup-functions*))
+
 (defun c-gensym (name)
   "Generate a probably-unique C symbol"
   (prog1 (format nil "~(~A~)_G~S" name *c-gensym-counter*)
@@ -208,7 +215,6 @@ placed into the interrupt vector at 0x18 in no guaranteed order."))
 
 (defmethod interrupt-vector-code-emit ((node node))
   "A node, by default, emits no interrupt vector code."
-  #+nil (emit "// Node: ~S" node)
   nil)
 
 (defun interrupt-vector-emit ()
@@ -249,7 +255,6 @@ the main() function"))
 
 (defmethod init-code-emit ((node node))
   "A node, by default, emits no init code."
-  #+nil (emit "// Node: ~S" node)
   nil)
 
 (defun init-emit ()
@@ -268,7 +273,6 @@ the main() function"))
 
 (defmethod extra-code-emit ((node node))
   "A node, by default, emits no extra code."
-  #+nil (emit "// Node: ~S" node)
   nil)
 
 (defun extra-emit ()
@@ -277,9 +281,6 @@ if you want a nice-looking main() function you had best indent it
 externally."
   (emit-file "include/extra-comment.inc")
   (mapc #'extra-code-emit *nodes*))
-
-;; // This is the entry point for blocks without proper entry points
-;; void null_entry_point(unsigned int arg) {};
 
 ;; Main loop code setting/clearing
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

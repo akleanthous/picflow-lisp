@@ -22,6 +22,7 @@
   (-> tmr0 usart-debug-node)
   (generate-code "18f4520"))
 
+#+nil
 (progn
   (cleanup)
   (defcode-inline fourty-two-adder (x)
@@ -66,7 +67,8 @@ void BLOCKNAME(unsigned long arg) {
   static unsigned int counter = 0;
   $DEFAULT(counter++);
 }
-"))
+"
+	   :block-name "counter"))
 
 (progn
   (cleanup)
@@ -115,7 +117,8 @@ void BLOCKNAME(unsigned long arg) {
   $DEFAULT(counter += increment);
   increment *= 2;
 }
-"))
+"
+	   :block-name "wonky_counter"))
 
 ;; Derivative block test
 (progn

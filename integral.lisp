@@ -12,4 +12,5 @@ block. Adds c (defaults to zero) to its output"
   static ~:*~A value = 0;
   value += arg;
   $DEFAULT(value~:[~; + (~:*~A)~]);
-}" type-specifier c)))
+}" type-specifier c)
+	   :block-name "integral"))
