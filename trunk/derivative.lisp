@@ -20,4 +20,5 @@ string."
     last_value = arg;
     have_last_value = 1;
   }
-}" type-specifier)))
+}" type-specifier)
+	   :block-name "derivative"))

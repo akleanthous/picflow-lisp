@@ -39,4 +39,5 @@ void BLOCKNAME(~A arg) {
     array_full = 1;
     $DEFAULT(sum / ~:*~A);
   }
-}" type-specifier n intermediate-type)))
+}" type-specifier n intermediate-type)
+	   :block-name "moving_average"))
