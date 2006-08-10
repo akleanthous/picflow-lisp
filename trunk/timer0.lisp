@@ -87,4 +87,4 @@ every time the output is called."
 		 :counter-variable counter-variable
 		 :initial-timer-state initial-timer-state
 		 :auto-restore-init-state-p auto-restore-init-state-p
-		 :output-names '(:default) :input-variables '()))
+		 :output-names '(:default) :input-names '()))

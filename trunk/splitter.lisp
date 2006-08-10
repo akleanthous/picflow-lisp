@@ -30,4 +30,4 @@ of the C type given in type-specifier"
   (make-instance 'splitter-block 
 		 :arg-type type-specifier
 		 :output-names output-names
-		 :input-variables '(:default)))
+		 :input-names '(:default)))

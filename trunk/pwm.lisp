@@ -13,6 +13,9 @@
    (counter-variable :reader counter-variable :initarg :counter-variable
 		     :documentation "The same variable used by the software timer")))
 
+(defmethod initialize-instance :after ((node pwm-output-aux) &key)
+  (setf (gethash :duty-cycle (inputs node)) (duty-cycle-variable node)))
+
 (defmethod prototype-code-emit ((node pwm-output-aux))
   (emit "unsigned char ~A = ~A;" (duty-cycle-variable node) (initial-duty-cycle node)))
 
@@ -51,6 +54,6 @@ specifies the initial 8-bit duty cycle. The default is 128, or
 				   :initial-duty-cycle initial-duty-cycle
 				   :counter-variable counter-variable
 				   :output-names '()
-				   :input-variables `(:default ,(make-symbol duty-cycle-variable-name)))))
+				   :input-names `(:default :duty-cycle))))
     (-> timer-block pwm-block)
     (values pwm-block timer-block)))

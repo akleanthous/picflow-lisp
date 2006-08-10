@@ -31,7 +31,7 @@
 		    :argument-name (format nil "~(~A~)" ',arg)
 		    :processor-content (progn ,@body)
 		    :output-names '(:default)
-		    :input-variables '(:default))))
+		    :input-names '(:default))))
 
 (defcode-inline inverter (x)
   "~(x)")
@@ -42,7 +42,7 @@
 		 :argument-name "x"
 		 :processor-content (format nil "x + ~D" n)
 		 :output-names '(:default)
-		 :input-variables '(:default)))
+		 :input-names '(:default)))
 
 (defcode-inline bits-10-to-8 (x)
   "(unsigned char)((x) >> 2)")

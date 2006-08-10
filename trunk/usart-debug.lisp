@@ -33,9 +33,6 @@ print. A newline is not included and must be inserted in the printf-string.")))
 	(emit (call-output output "arg")))))
   (emit "}~%"))
 
-;; FIXME: this shouldn't even be here, but some progs use it. It's deprecated.
-(defparameter usart-debug-node (make-instance 'usart-debug :output-names '(:default) :input-variables '(:default)))
-
 (defun usart-tracer (&key (type "int") (printf-string "%i\\n"))
   "Return a usart-debug node which prints out and passes along its
 input where type is a string like 'unsigned int' specifying the type
@@ -45,5 +42,5 @@ the argument to print. A newline is not included and must be inserted
 in the printf-string. The default is int."
   (make-instance 'usart-debug 
 		 :output-names '(:default) 
-		 :input-variables '(:default)
+		 :input-names  '(:default)
 		 :arg-type (cons type printf-string)))
