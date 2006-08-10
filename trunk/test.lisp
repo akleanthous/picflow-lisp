@@ -19,7 +19,7 @@
   (cleanup)
   ;;(defparameter tmr0 (make-instance 'timer0 :output-names '(:default) :input-variables '()))
   ;;(defparameter usart (make-instance 'usart-debug :output-names '() :input-variables '(:default)))
-  (-> tmr0 usart-debug-node)
+  (-> tmr0 ((usart-tracer)))
   (generate-code "18f4520"))
 
 #+nil
@@ -27,7 +27,7 @@
   (cleanup)
   (defcode-inline fourty-two-adder (x)
     "x + 42")
-  (-> tmr0 (fourty-two-adder) usart-debug-node)
+  (-> tmr0 (fourty-two-adder) ((usart-tracer)))
   (generate-code "18f4520"))
 
 ;; FIXME: this ((foo)) crap is fucking ugly. Reader macros to the
@@ -36,8 +36,8 @@
 
 (progn
   (cleanup)
-  (-> ((timer "flounder_counter")) usart-debug-node)
-  (-> ((timer "gorbachev" :initial-timer-state 10000)) usart-debug-node)
+  (-> ((timer "flounder_counter")) ((usart-tracer)))
+  (-> ((timer "gorbachev" :initial-timer-state 10000)) ((usart-tracer)))
   (generate-code "18f4520"))
 
 (progn
@@ -69,11 +69,6 @@ void BLOCKNAME(unsigned long arg) {
 }
 "
 	   :block-name "counter"))
-
-(progn
-  (cleanup)
-  (-> ((timer "timekeeper")) ((counter-block)) usart-debug-node)
-  (generate-code "18f4520"))
 
 (progn
   (cleanup)
