@@ -23,7 +23,7 @@
     (emit "LAT~A = arg;" (port-letter node)))
   (emit "}~%"))
 
-(defparameter lata (make-instance 'output-port :letter 'a :output-names '() :input-variables '(:default)))
-(defparameter latb (make-instance 'output-port :letter 'b :output-names '() :input-variables '(:default)))
-(defparameter latc (make-instance 'output-port :letter 'c :output-names '() :input-variables '(:default)))
-(defparameter latd (make-instance 'output-port :letter 'd :output-names '() :input-variables '(:default)))
+(defparameter lata (make-instance 'output-port :letter 'a :output-names '() :input-names '(:default)))
+(defparameter latb (make-instance 'output-port :letter 'b :output-names '() :input-names '(:default)))
+(defparameter latc (make-instance 'output-port :letter 'c :output-names '() :input-names '(:default)))
+(defparameter latd (make-instance 'output-port :letter 'd :output-names '() :input-names '(:default)))
