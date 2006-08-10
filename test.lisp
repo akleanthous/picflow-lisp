@@ -56,7 +56,7 @@
   (cleanup)
   (pwm "LATBbits.LATB3" "dc1" :initial-duty-cycle 128)
   (let ((pwm2 (pwm "LATBbits.LATB3" "dc2" :initial-duty-cycle 64)))
-    (-> ((timer "periodic_resetter" :initial-timer-state 150)) (pwm2 :in '|dc2|)))
+    (-> ((timer "periodic_resetter" :initial-timer-state 150)) (pwm2 :in :duty-cycle)))
   (generate-code "18f4520"))
 
 ;; C block demo
@@ -147,4 +147,20 @@ void BLOCKNAME(unsigned long arg) {
   (-> ((timer "timekeeper" :initial-timer-state 500)) ((wonky-counter-block))
       ((moving-average 5 "unsigned int" "unsigned long"))
       ((usart-tracer)))
+  (generate-code "18f4520"))
+
+;; C block input test
+(defun increment-counter-block ()
+  (c-block "
+void BLOCKNAME(unsigned long arg) {
+  $DEFAULT($[COUNTER]{unsigned int}{1}++);
+}
+"
+	   :block-name "counter"))
+
+(progn
+  (cleanup)
+  (let ((counter (increment-counter-block)))
+    (-> ((timer "timekeeper")) counter ((usart-tracer)))
+    (-> ((timer "periodic_resetter" :initial-timer-state 150)) (counter :in :counter)))
   (generate-code "18f4520"))
