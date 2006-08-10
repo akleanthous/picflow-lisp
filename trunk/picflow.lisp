@@ -25,22 +25,24 @@
 		 :accessor output-names
 		 :initarg :output-names
 		 :initform '())
-   (input-variables :type list
-		    :documentation "A list of variable names for
+   (inputs :initform (make-hash-table)
+	   :accessor inputs
+	   :documentation "A hash table mapping input slot names to C variable names")
+   (input-names :type list
+		:documentation "A list of variable names for
 global input variables. These should be symbols, and :default has a
 special meaning here: it means that the node has a standard input, and
 does not specify an input variable. The symbols are transformed into C
-variable names by simply using their symbol names. I know this looks
-ugly and non-idiomatic, but I've pretty much given up hope that the C
-will look good anyway."
-		    :accessor input-variables
-		    :initarg :input-variables
+variable names by looking them up in the INPUTS hash table."
+		    :accessor input-names
+		    :initarg :input-names
 		    :initform '())
    (entry-point :reader entry-point
 		:initarg :entry-point
 		:initform "null_entry_point")))
 
-(defvar *cleanup-functions* '())
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (defvar *cleanup-functions* '()))
 
 (defun cleanup ()
   (setf *nodes* nil)
@@ -53,7 +55,7 @@ will look good anyway."
   "Is the symbol INPUT-NAME a valid input name for NODE?"
   (check-type input-name symbol)
   (or (null input-name)
-      (member (string input-name) (input-variables node) :test #'equalp :key #'string)))
+      (member (string input-name) (input-names node) :test #'equalp :key #'string)))
 
 (defmethod valid-output-p ((node node) output-name)
   "Is the symbol INPUT-NAME a valid output name for NODE?"
@@ -83,9 +85,19 @@ to be nil."
 				  (entry-point (output-record-node output))
 				  arg))
 		 (:variable (format nil "~A = ~A"
-				    (output-record-extra-information output)
+				    (lookup-input-variable-name (output-record-node output)
+								(output-record-extra-information output))
 				    arg)))
 	       (if semicolon-p ";" "")))
+
+;; Input records
+;;;;;;;;;;;;;;;;
+
+(defmethod lookup-input-variable-name ((node node) name-symbol)
+  "Given a node and a symbol which is a valid input name for that
+node, return the C variable name string corresponding to the symbol."
+  ;; FIXME: should there be a default dead-end variable? Or just return nil?
+  (gethash name-symbol (inputs node)))
 
 ;; Linkage code
 ;;;;;;;;;;;;;;;
@@ -154,8 +166,8 @@ the form for b, to make this easier to apply with REDUCE."
 	  (let ((record (if (equalp (symbol-name b-in) "DEFAULT")
 			    (make-output-record :source-node a-object :node b-object :output-type :normal)
 			    (make-output-record :source-node a-object :node b-object :output-type :variable
-						;; Extra information is the variable name in this case
-						:extra-information (symbol-name b-in)))))
+						;; Extra information is the variable name symbol in this case
+						:extra-information b-in))))
 	    (setf (gethash a-out (outputs a-object)) record))))))
   b-form)
 
