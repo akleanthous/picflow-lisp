@@ -19,6 +19,9 @@
 #define ADCON0_AN6  0b00011000
 #define ADCON0_AN7  0b00011100
 
+// A macro to glue together two bytes into a 10-bit unsigned integer
+#define TENBITS(H,L) ((((unsigned int)H) << 8) | L)
+
 void setupADC0() {
   ADCON0 = ADCON0_BASE | ADCON0_AN0;
   ADCON1 = ADCON1_AN0_THROUGH_AN7_ANALOG;
@@ -32,7 +35,14 @@ void setupADC1() {
 }
 
 void adc_callback(void) {
+  LATB = ADRESL; // Do something with result
+
+  // BOILERPLATE
   PIR1bits.ADIF = 0;
+  // Get ADC started again. This should be optional, giving people the
+  // option of setting off the next conversion manually.
+  ADCON0bits.GO_DONE = 1;
+}
 
 #pragma code low_vector=0x18
 void low_interrupt(void) {
@@ -53,8 +63,9 @@ void main(void) {
   INTCONbits.PEIE = 1;
   INTCONbits.GIE = 1;
 
-  ADCON0bits.GO_DONE = 1; // Get ADC started
+  PIR1bits.ADIF = 0; // Clear ADC interrupt flag
   PIE1bits.ADIE = 1; // ADC conversion interrupt
+  ADCON0bits.GO_DONE = 1; // Get ADC started
 
   while (1);
 }
