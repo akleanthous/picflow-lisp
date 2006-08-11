@@ -327,6 +327,7 @@ externally."
     (emit "")
     (emit "// Enable interrupts and loop")
     (emit "INTCONbits.GIE = 1;")
+    (emit "INTCONbits.PEIE = 1;")
     (emit "while (1) {")
     (with-indent () 
       (emit *main-loop-code*))
