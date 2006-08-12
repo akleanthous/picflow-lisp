@@ -15,7 +15,8 @@ void setupADC1() {
 }
 
 void adc_callback(void) {
-  LATB = ADRESL; // Do something with result
+  // Do something with result, in this case set some blinking lights
+  LATB = ADRESL;
 
   // BOILERPLATE
   PIR1bits.ADIF = 0;
