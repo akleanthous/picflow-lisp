@@ -19,6 +19,7 @@
    (:file "c-blocks" :depends-on ("picflow"))
    (:file "section-blocks" :depends-on ("picflow"))
    (:file "splitter" :depends-on ("picflow"))
+   (:file "adc" :depends-on ("picflow"))
    (:file "derivative" :depends-on ("c-blocks"))
    (:file "integral" :depends-on ("c-blocks"))
    (:file "moving-average" :depends-on ("c-blocks")))
