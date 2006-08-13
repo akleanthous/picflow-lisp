@@ -26,7 +26,7 @@ print. A newline is not included and must be inserted in the printf-string.")))
   (emit "// Usart-debug handler")
   (emit "void ~A(~A arg) {" (entry-point node) (car (usart-debug-arg-type node)))
   (with-indent ()
-    (emit "printf(\"~A\", arg);" (cdr (usart-debug-arg-type node)))
+    (emit "printf((const rom far char *)\"~A\", arg);" (cdr (usart-debug-arg-type node)))
     (multiple-value-bind (output foundp)
 	(gethash :default (outputs node))
       (when foundp
