@@ -4,9 +4,34 @@
 
 void interruptHandlerLow(void);
 
+// Three nodes to process ADC results
+void adc1(unsigned char adresx) { LATB = adresx; }
+void adc2(unsigned char adresx) { LATB = ~adresx; }
+void adc3(unsigned char adresx) { LATB = adresx ^ 0x42; }
+
 void adc_callback(void) {
-  // Do something with result, in this case set some blinking lights
-  LATB = ADRESL;
+  // State variable controls which output is called
+  static unsigned char adc_output_state = 0;
+
+  // Do something with the result and switch to next state. Yes, we're
+  // a finite-state machine!
+  switch (adc_output_state) {
+  case 0: // AN0
+    adc1(ADRESL);
+    adc_output_state++;
+    setADC1();
+    break;
+  case 1: // AN1
+    adc2(ADRESL);
+    adc_output_state++;
+    setADC2();
+    break;
+  case 2: // AN2
+    adc3(ADRESL);
+    adc_output_state = 0;
+    setADC0();
+    break;
+  }
 
   // BOILERPLATE
   PIR1bits.ADIF = 0;
