@@ -2,17 +2,7 @@
 
 #include "picflow_adc.h"
 
-void setupADC0() {
-  ADCON0 = ADCON0_BASE | ADCON0_AN0;
-  ADCON1 = ADCON1_AN0_THROUGH_AN7_ANALOG;
-  ADCON2 = ADCON2_DUMB_DEFAULT_VALUE;
-}
-
-void setupADC1() {
-  ADCON0 = ADCON0_BASE | ADCON0_AN1;
-  ADCON1 = ADCON1_AN0_THROUGH_AN7_ANALOG;
-  ADCON2 = ADCON2_DUMB_DEFAULT_VALUE;
-}
+void interruptHandlerLow(void);
 
 void adc_callback(void) {
   // Do something with result, in this case set some blinking lights
@@ -39,6 +29,10 @@ void interruptHandlerLow(void) {
 void main(void) {
   TRISB = 0;
   LATB = 0;
+
+  // Set up the ADC
+  setup_common_adc();
+  setADC0();
 
   // Enable peripheral and global interrupts.
   INTCONbits.PEIE = 1;
