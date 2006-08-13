@@ -15,6 +15,7 @@
   (-> tmr0 lata)
   (generate-code "18f4520"))
 
+#+nil
 (progn
   (cleanup)
   ;;(defparameter tmr0 (make-instance 'timer0 :output-names '(:default) :input-variables '()))
@@ -163,4 +164,13 @@ void BLOCKNAME(unsigned long arg) {
   (let ((counter (increment-counter-block)))
     (-> ((timer "timekeeper")) counter ((usart-tracer)))
     (-> ((timer "periodic_resetter" :initial-timer-state 150)) (counter :in :counter)))
+  (generate-code "18f4520"))
+
+;; ADC test
+(progn
+  (cleanup)
+  (-> *an0* ((usart-tracer :type "unsigned int" :printf-string "AN0> %u\\n")))
+  (-> *an2* ((usart-tracer :type "unsigned int" :printf-string "AN2> %u\\n")))
+  (-> *an1* ((usart-tracer :type "unsigned int" :printf-string "AN1> %u\\n")))
+  (-> *an3* ((usart-tracer :type "unsigned int" :printf-string "AN3> %u\\n")))
   (generate-code "18f4520"))

@@ -155,6 +155,13 @@ valid input or outputs for the object."
     ;; Connect the nodes together with PRIM->
     (reduce #'prim-> nodes)))
 
+(defgeneric notify-> ((a node) (b node))
+  (:documentation "Notify nodes A and B that A has been linked to B"))
+
+(defmethod notify-> ((a node) (b node))
+  ;; By default, do nothing.
+  nil)
+
 (defun prim-> (a-form b-form)
   "Connect two nodes, a to b, given normalized linkage forms. Return
 the form for b, to make this easier to apply with REDUCE."
@@ -168,7 +175,8 @@ the form for b, to make this easier to apply with REDUCE."
 			    (make-output-record :source-node a-object :node b-object :output-type :variable
 						;; Extra information is the variable name symbol in this case
 						:extra-information b-in))))
-	    (setf (gethash a-out (outputs a-object)) record))))))
+	    (setf (gethash a-out (outputs a-object)) record))
+	  (notify-> a-object b-object)))))
   b-form)
 
 ;; C generation code
