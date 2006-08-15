@@ -37,10 +37,10 @@
   "~(x)")
 
 (defun adder (n)
-  "Return a block that adds N to each value"
+  "Return a block that adds N to each value. N can be negative."
   (make-instance 'inline-processor 
 		 :argument-name "x"
-		 :processor-content (format nil "x + ~D" n)
+		 :processor-content (format nil "x + (~D)" n)
 		 :output-names '(:default)
 		 :input-names '(:default)))
 
