@@ -20,7 +20,6 @@ supports other nodes."))
   (emit "void ~A(void);" (adc-callback node)))
 
 (defmethod init-code-emit ((node adc-daemon))
-  ;; FIXME: set up first channel
   (emit "setADC~D();" (analog-output-handler-input-number (car (output-handlers node))))
   (emit-file "include/adc_init.inc"))
 
@@ -87,6 +86,9 @@ for AN3, 6 for AN6, and so on."))
 		 :input-names  '(:default) 
 		 :input-number input-number))
 
+;; These are the analog ports that are accessible at the moment. They
+;; were chosen because they manage to avoid stepping on the toes of
+;; other important bits of the PIC, like PORTB.
 (defparameter *an0* (new-analog-pin 0))
 (defparameter *an1* (new-analog-pin 1))
 (defparameter *an2* (new-analog-pin 2))
