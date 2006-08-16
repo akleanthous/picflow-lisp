@@ -7,10 +7,10 @@
    CRC. */
 
 // Update the variable crc with a new byte called new_byte
-#define CRC16_UPDATE(crc, new_byte) {  	       	 \
+#define CRC16_UPDATE(crc, new_byte) {            \
   crc  = (unsigned char)(crc >> 8) | (crc << 8); \
-  crc ^= new_byte;				 \
-  crc ^= (unsigned char)(crc & 0xff) >> 4;	 \
-  crc ^= (crc << 8) << 4;			 \
-  crc ^= ((crc & 0xff) << 4) << 1;		 \
+  crc ^= new_byte;                               \
+  crc ^= (unsigned char)(crc & 0xff) >> 4;       \
+  crc ^= (crc << 8) << 4;                        \
+  crc ^= ((crc & 0xff) << 4) << 1;               \
 }
