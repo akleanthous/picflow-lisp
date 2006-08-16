@@ -1,0 +1,9 @@
+Packet format:
+
+message id	:	2 bytes
+message length	:	1 byte
+# Check is (length ^ id.high) ^ id.low
+check		:	1 byte
+# Store message in small memory buffer
+data		:	0 to 31 bytes
+CRC-16		:	2 bytes, covers data
