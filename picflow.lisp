@@ -152,15 +152,25 @@ valid input or outputs for the object."
 		 ,(%normalize-linkage-form (car (last nodes)) :default-output-name nil))))
     ;; Add all nodes in the chain to the list of used nodes
     (mapc (compose #'use-node #'car) nodes)
-    ;; Connect the nodes together with PRIM->
-    (reduce #'prim-> nodes)))
+    ;; Connect the nodes together with METHOD->
+    (labels ((call-method-> (a-form b-form)
+	       (destructuring-bind (a-object &key in out) a-form
+		 (let ((a-in in) (a-out out)) ; Hack to get things named properly
+		   (destructuring-bind (b-object &key in out) b-form
+		     (let ((b-in in) (b-out out)) ; Hack to get things named properly
+		       (method-> a-object a-in a-out a-form b-object b-in b-out b-form)))))))
+      (reduce #'call-method-> nodes))))
 
-(defgeneric notify-> ((a node) (b node))
-  (:documentation "Notify nodes A and B that A has been linked to B"))
+(defgeneric method-> ((a node) a-in a-out a-form (b node) b-in b-out b-form)
+  (:documentation "Link A to B using designated input and output
+slots. The proper linkage forms are also provided for the convenience
+of any methods which may try to override the default behavior: calling
+prim-> on the linkage forms."))
 
-(defmethod notify-> ((a node) (b node))
-  ;; By default, do nothing.
-  nil)
+(defmethod method-> ((a node) a-in a-out a-form (b node) b-in b-out b-form)
+  ;; By default, call prim-> on the linkage forms
+  (declare (ignore a-in a-out b-in b-out))
+  (prim-> a-form b-form))
 
 (defun prim-> (a-form b-form)
   "Connect two nodes, a to b, given normalized linkage forms. Return
@@ -175,8 +185,7 @@ the form for b, to make this easier to apply with REDUCE."
 			    (make-output-record :source-node a-object :node b-object :output-type :variable
 						;; Extra information is the variable name symbol in this case
 						:extra-information b-in))))
-	    (setf (gethash a-out (outputs a-object)) record))
-	  (notify-> a-object b-object)))))
+	    (setf (gethash a-out (outputs a-object)) record))))))
   b-form)
 
 ;; C generation code
