@@ -78,6 +78,11 @@ void BLOCKNAME(unsigned long arg) {
 
 (progn
   (cleanup)
+  (-> ((timer "timekeeper")) ((counter-block)) ((usart-tracer)))
+  (generate-code "18f4680"))
+
+(progn
+  (cleanup)
   (-> ((timer "timekeeper")) ((counter-block))
       ((to-unsigned-int))
       ((usart-tracer :type "unsigned int" :printf-string "> %u  "))
@@ -174,3 +179,20 @@ void BLOCKNAME(unsigned long arg) {
   (-> *an1* ((usart-tracer :type "unsigned int" :printf-string "AN1> %u\\n")))
   (-> *an3* ((usart-tracer :type "unsigned int" :printf-string "AN3> %u\\n")))
   (generate-code "18f4520"))
+
+;; Try for PID
+
+(cleanup)
+
+(defcode-inline clear-sum-block (x)
+  ())
+
+(defun pid-controller (type-specifier p-gain i-gain d-gain)
+  (let ((p-gain-block (fixed-gain p-gain))
+	(i-gain-block (fixed-gain i-gain))
+	(d-gain-block (fixed-gain d-gain))
+	(i-block (integral-rectangle type-specifier))
+	(d-block (derivative type-specifier))
+	())))
+
+(let ((p-gain (fixed-gain ))))
