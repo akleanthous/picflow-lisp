@@ -67,3 +67,11 @@
 
 (defcode-inline to-long (x)
   "(long)(x)")
+
+(defun fixed-gain (g)
+  "Return a block that multiplies each value by a fixed gain G"
+  (make-instance 'inline-processor 
+		 :argument-name "x"
+		 :processor-content (format nil "x * (~D)" g)
+		 :output-names '(:default)
+		 :input-names '(:default)))
