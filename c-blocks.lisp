@@ -135,7 +135,9 @@ input names, but it's not strictly necessary."
 		  (cl-ppcre:register-groups-bind (name worthless-gibberish type more-worthless-gibberish default-value)
 		      ("\\$\\[([a-zA-Z_]+)\\](\\{([^}]*)\\})?(\\{([^}]*)\\})?" match)
 		    (declare (ignore worthless-gibberish more-worthless-gibberish))
-		    (collect (list (intern name "KEYWORD") (or type "int") (or default-value "0"))))))))
+		    (collect (list (intern (or name (c-gensym "UNNAMED")) "KEYWORD")
+				   (or type "int")
+				   (or default-value "0"))))))))
     (remove-duplicates uses :test #'equalp :key #'car :from-end t)))
 
 (defun replace-inputs (text node)

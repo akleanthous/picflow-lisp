@@ -24,7 +24,7 @@
 	       (output (gethash output-name (outputs node))))
 	  (if output
 	      (call-output output (processor-content node))
-	      (error "Inline processor node ~S needs a single output connection, but has none")))))
+	      (error "Inline processor node ~S needs a single output connection, but has none" node)))))
 
 (defmacro defcode-inline (name (arg) &body body)
   `(defun ,name () (make-instance 'inline-processor 
