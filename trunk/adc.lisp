@@ -2,8 +2,8 @@
 
 (defstruct analog-output-handler
   "A record for an output from the ADC daemon"
-  (output       :type output-record)
-  (input-number :type (integer 0 7)))
+  (output (make-output-record) :type output-record)
+  (input-number 0 :type (integer 0 7)))
 
 (defclass adc-daemon (node)
   ((adc-callback :initform (c-gensym "adc_callback") :reader adc-callback)

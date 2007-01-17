@@ -69,10 +69,11 @@ variable names by looking them up in the INPUTS hash table."
 (defstruct output-record
   "A struct describing an outgoing link from one node to another. It
 carries information about which node is being linked to what, and how."
-  (source-node :type 'node)
-  (node :type 'node)
-  (output-type :type 'symbol)
-  (extra-information :documentation "Extra information will be used in linkage-type-dependant ways"))
+  (source-node nil :type node)
+  (node nil :type node)
+  (output-type nil :type symbol)
+  ;; Extra information will be used in linkage-type-dependant ways
+  (extra-information nil))
 
 (defun call-output (output arg &key (semicolon-p t))
   "Return C code to call an output record. A trailing semicolon is
@@ -161,7 +162,7 @@ valid input or outputs for the object."
 		       (method-> a-object a-in a-out a-form b-object b-in b-out b-form)))))))
       (reduce #'call-method-> nodes))))
 
-(defgeneric method-> ((a node) a-in a-out a-form (b node) b-in b-out b-form)
+(defgeneric method-> (a a-in a-out a-form b b-in b-out b-form)
   (:documentation "Link A to B using designated input and output
 slots. The proper linkage forms are also provided for the convenience
 of any methods which may try to override the default behavior: calling
