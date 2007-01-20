@@ -69,7 +69,8 @@ supports other nodes."))
 for AN3, 6 for AN6, and so on."))
   (:documentation "An analog input pin. Outputs 10-bit analog values repeatedly."))
 
-(defmethod notify-> ((node analog-pin) (b node))
+(defmethod method-> :before ((node analog-pin) a-in a-out a-form (b node) b-in b-out b-form)
+  (declare (ignore a-in a-out b-in b-out))
   ;; Analog pins need the ADC daemon to support them
   (use-node *adc-daemon*)
   ;; Add the default (and hopefully only) output linkage to the list of
