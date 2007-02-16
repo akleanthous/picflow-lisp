@@ -23,12 +23,14 @@
   (-> tmr0 ((usart-tracer)))
   (generate-code "18f4520"))
 
-#+nil
+
 (progn
   (cleanup)
   (defcode-inline fourty-two-adder (x)
     "x + 42")
-  (-> tmr0 (fourty-two-adder) ((usart-tracer)))
+  (-> ((timer "ticktock" :initial-timer-state 10000))
+      ((fourty-two-adder))
+      ((usart-tracer)))
   (generate-code "18f4520"))
 
 ;; FIXME: this ((foo)) crap is fucking ugly. Reader macros to the
@@ -135,8 +137,9 @@ void BLOCKNAME(unsigned long arg) {
       ;; commented out without affecting anything except the first
       ;; term of the sequence. If the integral is put after the
       ;; derivative block, it must have a C term of 1.
-      ((integral-rectangle "unsigned int")) #+nil ((usart-tracer :printf-string "{int: %u}\\n")) ((derivative "unsigned int")) 
-      ;((derivative "unsigned int")) #+nil ((usart-tracer :printf-string "{deriv: %u}\\n")) ((integral-rectangle "unsigned int" "1"))
+      ((integral-rectangle "unsigned int"))
+      ;((usart-tracer :printf-string "{int: %u}\\n"))
+      ((derivative "unsigned int"))
       ((usart-tracer)))
   (generate-code "18f4520"))
 
@@ -196,3 +199,11 @@ void BLOCKNAME(unsigned long arg) {
 	())))
 
 (let ((p-gain (fixed-gain ))))
+
+;; Test the FIR stuff
+(progn
+  (cleanup)
+  (-> ((timer "timekeeper")) ((counter-block)) 
+      ((simple-fir :coeffs '(1 2 3)))
+      ((usart-tracer)))
+  (generate-code "18f4520"))

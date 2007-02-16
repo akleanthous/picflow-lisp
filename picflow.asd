@@ -22,5 +22,6 @@
    (:file "adc" :depends-on ("picflow"))
    (:file "derivative" :depends-on ("c-blocks"))
    (:file "integral" :depends-on ("c-blocks"))
-   (:file "moving-average" :depends-on ("c-blocks")))
+   (:file "moving-average" :depends-on ("c-blocks"))
+   (:file "fir" :depends-on ("c-blocks")))
   :depends-on (cl-utilities cl-ppcre))

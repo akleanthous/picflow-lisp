@@ -30,7 +30,7 @@
 ;; void BLOCKNAME(int input) {
 ;;   printf("Custom C block called! Flower number: %i\n", $[FLOWERNUMBER]{unsigned int}{0});
 ;;   $answer(42);
-;;   $default($[FLOWERNUMBER]);
+;;   $DEFAULT($[FLOWERNUMBER]);
 ;; }
 
 (defclass c-block-node (node)
@@ -153,7 +153,7 @@ with code actually referencing the variables"
 (defparameter *sample-code* "void BLOCKNAME(int input) {
   printf(\"Custom C block called! Flower number: %i\n\", $[FLOWERNUMBER]{unsigned int}{1});
   $answer(42); $steveThePirate($[FOOL_INPUT]);
-  $default($[FLOWERNUMBER]);
+  $DEFAULT($[FLOWERNUMBER]);
 }")
 
 ;; Standard node API methods
