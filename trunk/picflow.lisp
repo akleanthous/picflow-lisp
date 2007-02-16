@@ -196,7 +196,7 @@ the form for b, to make this easier to apply with REDUCE."
 (defvar *indentation-level* 0
   "The number of levels to indent the code")
 
-(defmacro with-indent ((&key (spaces 4)) &body body)
+(defmacro with-indent ((&key (spaces 2)) &body body)
   `(let ((*indentation-level* (+ *indentation-level* ,spaces)))
     ,@body))
 
