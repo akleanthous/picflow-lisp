@@ -3,10 +3,10 @@
 (in-package :picflow)
 
 (defun simple-fir (&key (in-type "int") (out-type in-type) coeffs)
-  "Create a simple FIR filter with given coefficients COEFFS, and
-a specified IN-TYPE (a C type specifier string which defaults to
-'int') and OUT-TYPE (a C type specifier string which defaults to
-IN-TYPE)."
+  "Create a simple causal FIR filter with given coefficients
+COEFFS, and a specified IN-TYPE (a C type specifier string which
+defaults to 'int') and OUT-TYPE (a C type specifier string which
+defaults to IN-TYPE)."
   (assert coeffs) 
   (c-block
    (with-output-to-string (*c-output*)
