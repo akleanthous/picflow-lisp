@@ -1,0 +1,3 @@
+The usual ways of programming PIC18 microcontrollers are using assembly or C, and both of these ways suck. The way I usually think of PIC programs is to imagine data flowing around through blocks, similar to a Simulink model.
+
+This (very immature) project lets me program PICs the way they should be programmed, using Lisp to generate the high-level structure and allowing the use of C. It is very much hackware, and probably usable only by me at this point.
